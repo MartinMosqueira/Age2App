@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,9 +10,54 @@ public class Main {
         startGUI();
     }
 
+    private JMenuBar get_menu_bar(){
+        JMenuBar menuBar;
+        JMenu civ;
+        JMenu tactics;
+        JMenuItem scout;
+        JMenuItem castle;
+        LoadFonts fonts;
+
+        //load colors
+        CustomColor colorMenuBar = CustomColor.MENUBAR;
+        CustomColor colorTitle = CustomColor.TITLE;
+        CustomColor colorSubMenu = CustomColor.SUBMENU;
+
+
+        menuBar = new JMenuBar();
+        civ = new JMenu("Civilizaciones");
+        tactics = new JMenu("Tácticas");
+        scout = new JMenuItem("rush scouts");
+        castle = new JMenuItem("fast castle boom");
+
+        menuBar.setBackground(colorMenuBar.getColor());
+        civ.setForeground(colorTitle.getColor());
+        tactics.setForeground(colorTitle.getColor());
+        scout.setBackground(colorSubMenu.getColor());
+        castle.setBackground(colorSubMenu.getColor());
+
+        //load fonts
+        fonts = new LoadFonts();
+        fonts.load_custom_font();
+        civ.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
+        tactics.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
+        scout.setFont(fonts.getFontSubMenu().deriveFont(Font.BOLD,12));
+        castle.setFont(fonts.getFontSubMenu().deriveFont(Font.BOLD,12));
+
+        tactics.add(scout);
+        tactics.add(castle);
+        menuBar.add(civ);
+        menuBar.add(tactics);
+
+        return menuBar;
+    }
+
     private void startGUI(){
-        //load image 1
-        ImageIcon icon = new ImageIcon("img/CivIcon-Mongoles.png");
+        //load colors
+        CustomColor colorBackground = CustomColor.BACKGROUND;
+
+        //load image
+        ImageIcon icon = new ImageIcon("img/civ/CivIcon-Mongoles.png");
         Image getImage = icon.getImage();
         Image scaledImage = getImage.getScaledInstance(50,50,Image.SCALE_AREA_AVERAGING);
         ImageIcon newImageScaled = new ImageIcon(scaledImage);
@@ -30,45 +73,21 @@ public class Main {
         JPanel mainPanel = new JPanel();
         //organizo los contenedores en columnas
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
-        mainPanel.setBackground(new Color(232,220,196));
+        mainPanel.setBackground(colorBackground.getColor());
 
-        JPanel panelButtons = new JPanel();
-        //organizo los contenedores en fila
-        panelButtons.setLayout(new FlowLayout());
-        panelButtons.setOpaque(false); // fondo del panel transparente
-        //panelButtons.setPreferredSize(new Dimension(200, 200));
-        //add button 1
-        JButton myButton = new JButton("Message");
-        myButton.setFont(new java.awt.Font("Arial", Font.BOLD, 14));
-        myButton.setBackground(new Color(8, 4, 36));
-        myButton.setForeground(new Color(252, 212, 4));
-        myButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Hello World");
-            }
-        });
-        //add button 2
-        JButton myButton2 = new JButton("Finish");
-        myButton2.setFont(new java.awt.Font("Arial", Font.BOLD, 14));
-        myButton2.setBackground(new Color(8, 4, 36));
-        myButton2.setForeground(new Color(252, 212, 4));
-
-        //add buttons at frame
-        panelButtons.add(myButton);
-        panelButtons.add(myButton2);
-
-        JPanel panelHome = new JPanel();
-        panelHome.setOpaque(false); //fondo del panel transparente
-        JLabel image = new JLabel("Mongoles",newImageScaled, JLabel.CENTER);
-        panelHome.add(image);
+        JPanel panelCiv = new JPanel();
+        //organizo los contenedores en filas
+        panelCiv.setLayout(new FlowLayout());
+        panelCiv.setOpaque(false); //fondo del panel transparente
+        JLabel image = new JLabel(newImageScaled, JLabel.LEFT);
+        panelCiv.add(image);
 
         //add main panel at frame
-        mainPanel.add(panelButtons);
-        mainPanel.add(panelHome);
+        mainPanel.add(panelCiv);
 
         //add window panel
         window.add(mainPanel);
+        window.setJMenuBar(this.get_menu_bar());
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setVisible(true);
     }
