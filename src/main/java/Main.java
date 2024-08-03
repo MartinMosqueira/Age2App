@@ -1,5 +1,11 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Main {
     public static void main(String[] args) {
@@ -55,6 +61,8 @@ public class Main {
     private void startGUI(){
         //load colors
         CustomColor colorBackground = CustomColor.BACKGROUND;
+        CustomColor colorMenuBar = CustomColor.MENUBAR;
+        CustomColor colorTitle = CustomColor.TITLE;
 
         //load image
         CustomImage images = new CustomImage();
@@ -78,8 +86,70 @@ public class Main {
         //organizo los contenedores en filas
         panelCiv.setLayout(new FlowLayout());
         panelCiv.setOpaque(false); //fondo del panel transparente
-        JLabel iconMongols = new JLabel(mongols, JLabel.LEFT);
-        JLabel iconFrancs = new JLabel(francs, JLabel.LEFT);
+
+        JButton iconMongols = new JButton(mongols);
+        JButton iconFrancs = new JButton(francs);
+        iconMongols.setBackground(colorMenuBar.getColor());
+        iconFrancs.setBackground(colorMenuBar.getColor());
+        iconMongols.setFocusPainted(false);
+        iconFrancs.setFocusPainted(false);
+
+        Border raisedbevel = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
+        iconMongols.setBorder(raisedbevel);
+        iconFrancs.setBorder(raisedbevel);
+
+        iconMongols.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                iconMongols.setBackground(colorTitle.getColor());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                iconMongols.setBackground(colorMenuBar.getColor());
+            }
+        });
+
+        iconMongols.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame newFrame = new JFrame("New Panel");
+                newFrame.setSize(300, 200);
+                newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                JPanel newPanel = new JPanel();
+                newPanel.add(new JLabel("This is a new panel!"));
+                newFrame.add(newPanel);
+                newFrame.setVisible(true);
+            }
+        });
+
+        iconFrancs.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                iconFrancs.setBackground(colorTitle.getColor());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                iconFrancs.setBackground(colorMenuBar.getColor());
+            }
+        });
+
+        iconFrancs.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame newFrame = new JFrame("New Panel");
+                newFrame.setSize(300, 200);
+                newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+                JPanel newPanel = new JPanel();
+                newPanel.add(new JLabel("This is a new panel!"));
+                newFrame.add(newPanel);
+                newFrame.setVisible(true);
+            }
+        });
+
         panelCiv.add(iconMongols);
         panelCiv.add(iconFrancs);
 

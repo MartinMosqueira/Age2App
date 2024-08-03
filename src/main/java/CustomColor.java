@@ -2,7 +2,7 @@ import java.awt.*;
 
 public enum CustomColor {
     BACKGROUND(new Color(232,220,196)),
-    MENUBAR(new Color(104,4,12)),
+    MENUBAR(new Color(140,12,12)),
     TITLE(new Color(227,148,94,255)),
     SUBMENU(new Color(192,148,124))
     ;
