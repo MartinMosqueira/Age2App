@@ -57,10 +57,9 @@ public class Main {
         CustomColor colorBackground = CustomColor.BACKGROUND;
 
         //load image
-        ImageIcon icon = new ImageIcon("img/civ/CivIcon-Mongoles.png");
-        Image getImage = icon.getImage();
-        Image scaledImage = getImage.getScaledInstance(50,50,Image.SCALE_AREA_AVERAGING);
-        ImageIcon newImageScaled = new ImageIcon(scaledImage);
+        CustomImage images = new CustomImage();
+        ImageIcon mongols = images.load_image_civ("img/civ/CivIcon-Mongoles.png");
+        ImageIcon francs = images.load_image_civ("img/civ/CivIcon-Francos.png");
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame window = new JFrame("Age of Empires II");
@@ -79,8 +78,10 @@ public class Main {
         //organizo los contenedores en filas
         panelCiv.setLayout(new FlowLayout());
         panelCiv.setOpaque(false); //fondo del panel transparente
-        JLabel image = new JLabel(newImageScaled, JLabel.LEFT);
-        panelCiv.add(image);
+        JLabel iconMongols = new JLabel(mongols, JLabel.LEFT);
+        JLabel iconFrancs = new JLabel(francs, JLabel.LEFT);
+        panelCiv.add(iconMongols);
+        panelCiv.add(iconFrancs);
 
         //add main panel at frame
         mainPanel.add(panelCiv);
