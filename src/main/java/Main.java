@@ -58,6 +58,20 @@ public class Main {
         return menuBar;
     }
 
+    public void mouse_over_icons_civ(JButton iconCiv, CustomColor overColor){
+        iconCiv.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                iconCiv.setBackground(overColor.getColor());
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                iconCiv.setBackground(CustomColor.MENUBAR.getColor());
+            }
+        });
+    }
+
     private void startGUI(){
         //load colors
         CustomColor colorBackground = CustomColor.BACKGROUND;
@@ -98,18 +112,10 @@ public class Main {
         iconMongols.setBorder(raisedbevel);
         iconFrancs.setBorder(raisedbevel);
 
-        iconMongols.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                iconMongols.setBackground(colorTitle.getColor());
-            }
+        mouse_over_icons_civ(iconMongols,colorTitle);
+        mouse_over_icons_civ(iconFrancs,colorTitle);
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                iconMongols.setBackground(colorMenuBar.getColor());
-            }
-        });
-
+        //TODO: refactor functions
         iconMongols.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -121,18 +127,6 @@ public class Main {
                 newPanel.add(new JLabel("This is a new panel!"));
                 newFrame.add(newPanel);
                 newFrame.setVisible(true);
-            }
-        });
-
-        iconFrancs.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                iconFrancs.setBackground(colorTitle.getColor());
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                iconFrancs.setBackground(colorMenuBar.getColor());
             }
         });
 
