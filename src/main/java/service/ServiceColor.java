@@ -1,6 +1,8 @@
+package service;
+
 import java.awt.*;
 
-public enum CustomColor {
+public enum ServiceColor {
     BACKGROUND(new Color(232,220,196)),
     MENUBAR(new Color(140,12,12)),
     TITLE(new Color(227,148,94,255)),
@@ -9,7 +11,7 @@ public enum CustomColor {
 
     private Color color;
 
-    CustomColor(Color color) {
+    ServiceColor(Color color) {
         this.color=color;
     }
 

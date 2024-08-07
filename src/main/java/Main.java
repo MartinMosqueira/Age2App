@@ -1,11 +1,13 @@
+import interfaces.ICiv;
+import model.Francs;
+import model.Mongols;
+import service.ServiceColor;
+import service.ServiceFont;
+import service.ServiceIcon;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,12 +24,12 @@ public class Main {
         JMenu tactics;
         JMenuItem scout;
         JMenuItem castle;
-        CustomFont fonts;
+        ServiceFont fonts;
 
         //load colors
-        CustomColor colorMenuBar = CustomColor.MENUBAR;
-        CustomColor colorTitle = CustomColor.TITLE;
-        CustomColor colorSubMenu = CustomColor.SUBMENU;
+        ServiceColor colorMenuBar = ServiceColor.MENUBAR;
+        ServiceColor colorTitle = ServiceColor.TITLE;
+        ServiceColor colorSubMenu = ServiceColor.SUBMENU;
 
 
         menuBar = new JMenuBar();
@@ -45,7 +47,7 @@ public class Main {
         //load fonts
         String menuFont = "font/Centaur MT.ttf";
         String subMenuFont = "font/papyrus.ttf";
-        fonts = new CustomFont(menuFont, subMenuFont);
+        fonts = new ServiceFont(menuFont, subMenuFont);
         civ.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
         tactics.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
         scout.setFont(fonts.getFontSubMenu().deriveFont(Font.BOLD,12));
@@ -59,33 +61,19 @@ public class Main {
         return menuBar;
     }
 
-    public void mouse_over_icons_civ(JButton iconCiv, CustomColor overColor){
-        iconCiv.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                iconCiv.setBackground(overColor.getColor());
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                iconCiv.setBackground(CustomColor.MENUBAR.getColor());
-            }
-        });
-    }
-
     private void startGUI(){
         //load colors
-        CustomColor colorBackground = CustomColor.BACKGROUND;
-        CustomColor colorMenuBar = CustomColor.MENUBAR;
-        CustomColor colorTitle = CustomColor.TITLE;
+        ServiceColor colorBackground = ServiceColor.BACKGROUND;
+        ServiceColor colorMenuBar = ServiceColor.MENUBAR;
+        ServiceColor colorTitle = ServiceColor.TITLE;
 
         //load image
-        CustomImage images = new CustomImage();
-        ImageIcon mongols = images.load_icon("img/civ/CivIcon-Mongoles.png");
-        ImageIcon francs = images.load_icon("img/civ/CivIcon-Francos.png");
+        ServiceIcon images = new ServiceIcon();
+        ImageIcon mongolsIcon = images.load_icon("img/civ/CivIcon-Mongoles.png");
+        ImageIcon francsIcon = images.load_icon("img/civ/CivIcon-Francos.png");
 
-        ImageIcon mongolsResize = images.resize_icon_civ(mongols,50,50);
-        ImageIcon francsResize = images.resize_icon_civ(francs,50,50);
+        ImageIcon mongolsResize = images.resize_icon_civ(mongolsIcon,50,50);
+        ImageIcon francsResize = images.resize_icon_civ(francsIcon,50,50);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame window = new JFrame("Age of Empires II");
@@ -116,37 +104,13 @@ public class Main {
         iconMongols.setBorder(raisedbevel);
         iconFrancs.setBorder(raisedbevel);
 
-        mouse_over_icons_civ(iconMongols,colorTitle);
-        mouse_over_icons_civ(iconFrancs,colorTitle);
+        images.mouse_over_icons_civ(iconMongols,colorTitle);
+        images.mouse_over_icons_civ(iconFrancs,colorTitle);
 
-        //TODO: refactor functions
-        iconMongols.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame newFrame = new JFrame("New Panel");
-                newFrame.setSize(300, 200);
-                newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-                JPanel newPanel = new JPanel();
-                newPanel.add(new JLabel("This is a new panel!"));
-                newFrame.add(newPanel);
-                newFrame.setVisible(true);
-            }
-        });
-
-        iconFrancs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame newFrame = new JFrame("New Panel");
-                newFrame.setSize(300, 200);
-                newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-                JPanel newPanel = new JPanel();
-                newPanel.add(new JLabel("This is a new panel!"));
-                newFrame.add(newPanel);
-                newFrame.setVisible(true);
-            }
-        });
+        ICiv mongolFrame = new Mongols();
+        ICiv francFrame = new Francs();
+        images.frame_icons_civ(iconMongols, mongolFrame);
+        images.frame_icons_civ(iconFrancs,francFrame);
 
         panelCiv.add(iconMongols);
         panelCiv.add(iconFrancs);

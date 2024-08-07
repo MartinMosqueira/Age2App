@@ -1,12 +1,14 @@
+package service;
+
 import java.awt.*;
 import java.io.IOException;
 
-public class CustomFont {
+public class ServiceFont {
     private Font fontMenu;
     private Font fontSubMenu;
-    private LoaderFont loaderFont = new LoaderFont();
+    private ServiceLoaderFont loaderFont = new ServiceLoaderFont();
 
-    public CustomFont(String fontMenuPath, String fontSubMenuPath) {
+    public ServiceFont(String fontMenuPath, String fontSubMenuPath) {
         try{
             this.fontMenu = loaderFont.load_font(fontMenuPath);
             this.fontSubMenu = loaderFont.load_font(fontSubMenuPath);
