@@ -22,7 +22,7 @@ public class Main {
         JMenu tactics;
         JMenuItem scout;
         JMenuItem castle;
-        LoadFonts fonts;
+        CustomFont fonts;
 
         //load colors
         CustomColor colorMenuBar = CustomColor.MENUBAR;
@@ -43,8 +43,9 @@ public class Main {
         castle.setBackground(colorSubMenu.getColor());
 
         //load fonts
-        fonts = new LoadFonts();
-        fonts.load_custom_font();
+        String menuFont = "font/Centaur MT.ttf";
+        String subMenuFont = "font/papyrus.ttf";
+        fonts = new CustomFont(menuFont, subMenuFont);
         civ.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
         tactics.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
         scout.setFont(fonts.getFontSubMenu().deriveFont(Font.BOLD,12));
@@ -80,8 +81,11 @@ public class Main {
 
         //load image
         CustomImage images = new CustomImage();
-        ImageIcon mongols = images.load_image_civ("img/civ/CivIcon-Mongoles.png");
-        ImageIcon francs = images.load_image_civ("img/civ/CivIcon-Francos.png");
+        ImageIcon mongols = images.load_icon("img/civ/CivIcon-Mongoles.png");
+        ImageIcon francs = images.load_icon("img/civ/CivIcon-Francos.png");
+
+        ImageIcon mongolsResize = images.resize_icon_civ(mongols,50,50);
+        ImageIcon francsResize = images.resize_icon_civ(francs,50,50);
 
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame window = new JFrame("Age of Empires II");
@@ -101,8 +105,8 @@ public class Main {
         panelCiv.setLayout(new FlowLayout());
         panelCiv.setOpaque(false); //fondo del panel transparente
 
-        JButton iconMongols = new JButton(mongols);
-        JButton iconFrancs = new JButton(francs);
+        JButton iconMongols = new JButton(mongolsResize);
+        JButton iconFrancs = new JButton(francsResize);
         iconMongols.setBackground(colorMenuBar.getColor());
         iconFrancs.setBackground(colorMenuBar.getColor());
         iconMongols.setFocusPainted(false);

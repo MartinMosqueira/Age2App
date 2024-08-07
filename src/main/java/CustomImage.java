@@ -3,9 +3,13 @@ import java.awt.*;
 
 public class CustomImage {
 
-    public ImageIcon load_image_civ(String icon){
-        Image getImage = new ImageIcon(icon).getImage();
-        Image scaledImage = getImage.getScaledInstance(50,50,Image.SCALE_AREA_AVERAGING);
+    public ImageIcon load_icon(String icon){
+        return new ImageIcon(icon);
+    }
+
+    public ImageIcon resize_icon_civ(ImageIcon icon, int width, int height){
+        Image getIcon = icon.getImage();
+        Image scaledImage = getIcon.getScaledInstance(width,height,Image.SCALE_AREA_AVERAGING);
         return new ImageIcon(scaledImage);
     }
 }
