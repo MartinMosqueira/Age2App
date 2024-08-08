@@ -33,7 +33,7 @@ public class ServiceIcon {
         });
     }
 
-    public void frame_icons_civ(JButton iconCiv, ICiv frameCiv){
+    public void panel_icons_civ(JButton iconCiv, ICiv frameCiv){
         iconCiv.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

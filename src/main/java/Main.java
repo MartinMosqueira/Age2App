@@ -48,6 +48,7 @@ public class Main {
         String menuFont = "font/Centaur MT.ttf";
         String subMenuFont = "font/papyrus.ttf";
         fonts = new ServiceFont(menuFont, subMenuFont);
+
         civ.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
         tactics.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
         scout.setFont(fonts.getFontSubMenu().deriveFont(Font.BOLD,12));
@@ -68,13 +69,14 @@ public class Main {
         ServiceColor colorTitle = ServiceColor.TITLE;
 
         //load image
-        ServiceIcon images = new ServiceIcon();
-        ImageIcon mongolsIcon = images.load_icon("img/civ/CivIcon-Mongoles.png");
-        ImageIcon francsIcon = images.load_icon("img/civ/CivIcon-Francos.png");
+        ServiceIcon serviceIcon = new ServiceIcon();
+        ImageIcon mongolsIcon = serviceIcon.load_icon("img/civ/CivIcon-Mongoles.png");
+        ImageIcon francsIcon = serviceIcon.load_icon("img/civ/CivIcon-Francos.png");
 
-        ImageIcon mongolsResize = images.resize_icon_civ(mongolsIcon,50,50);
-        ImageIcon francsResize = images.resize_icon_civ(francsIcon,50,50);
+        ImageIcon mongolsResize = serviceIcon.resize_icon_civ(mongolsIcon,50,50);
+        ImageIcon francsResize = serviceIcon.resize_icon_civ(francsIcon,50,50);
 
+        //WINDOW
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame window = new JFrame("Age of Empires II");
         window.setIconImage(new ImageIcon("img/icon-age2.png").getImage());
@@ -83,11 +85,13 @@ public class Main {
         window.setLocationRelativeTo(null);
         window.setMinimumSize(window.getSize());
 
+        //MAIN PANEL
         JPanel mainPanel = new JPanel();
         //organizo los contenedores en columnas
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
         mainPanel.setBackground(colorBackground.getColor());
 
+        //PANEL CIVILIZATION
         JPanel panelCiv = new JPanel();
         //organizo los contenedores en filas
         panelCiv.setLayout(new FlowLayout());
@@ -104,21 +108,22 @@ public class Main {
         iconMongols.setBorder(raisedbevel);
         iconFrancs.setBorder(raisedbevel);
 
-        images.mouse_over_icons_civ(iconMongols,colorTitle);
-        images.mouse_over_icons_civ(iconFrancs,colorTitle);
+        serviceIcon.mouse_over_icons_civ(iconMongols,colorTitle);
+        serviceIcon.mouse_over_icons_civ(iconFrancs,colorTitle);
 
-        ICiv mongolFrame = new Mongols();
-        ICiv francFrame = new Francs();
-        images.frame_icons_civ(iconMongols, mongolFrame);
-        images.frame_icons_civ(iconFrancs,francFrame);
+        //PANELS CIVILIZATIONS
+        ICiv mongolPanel = new Mongols();
+        ICiv francPanel = new Francs();
+        serviceIcon.panel_icons_civ(iconMongols, mongolPanel);
+        serviceIcon.panel_icons_civ(iconFrancs,francPanel);
 
         panelCiv.add(iconMongols);
         panelCiv.add(iconFrancs);
 
-        //add main panel at frame
+        //add panels at main panel
         mainPanel.add(panelCiv);
 
-        //add window panel
+        //add main panel at window panel
         window.add(mainPanel);
         window.setJMenuBar(this.get_menu_bar());
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
