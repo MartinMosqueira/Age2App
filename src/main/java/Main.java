@@ -7,9 +7,19 @@ import service.ServiceIcon;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Main {
+
+    private JMenuItem scout;
+    private JMenuItem castle;
+
+    private JMenu civ;
+
     public static void main(String[] args) {
         Main main = new Main();
     }
@@ -20,10 +30,7 @@ public class Main {
 
     private JMenuBar get_menu_bar(){
         JMenuBar menuBar;
-        JMenu civ;
         JMenu tactics;
-        JMenuItem scout;
-        JMenuItem castle;
         ServiceFont fonts;
 
         //load colors
@@ -85,6 +92,9 @@ public class Main {
         window.setLocationRelativeTo(null);
         window.setMinimumSize(window.getSize());
 
+        //CARD PANEL
+        JPanel cardPanel = new JPanel(new CardLayout());
+
         //MAIN PANEL
         JPanel mainPanel = new JPanel();
         //organizo los contenedores en columnas
@@ -120,12 +130,61 @@ public class Main {
         panelCiv.add(iconMongols);
         panelCiv.add(iconFrancs);
 
+        //PANELS TACTICS
+        JPanel scoutsPanel = new JPanel();
+        scoutsPanel.add(new JLabel("panel scouts!"));
+        JPanel castlePanel = new JPanel();
+        castlePanel.add(new JLabel("castle panel!"));
+
         //add panels at main panel
         mainPanel.add(panelCiv);
 
-        //add main panel at window panel
-        window.add(mainPanel);
+        //add panels at card panel
+        cardPanel.add(scoutsPanel,"Scouts");
+        cardPanel.add(castlePanel,"Castle");
+        cardPanel.add(mainPanel, "Civilizations");
+
         window.setJMenuBar(this.get_menu_bar());
+
+        MenuListener menuListener = new MenuListener() {
+            final CardLayout cl = (CardLayout) cardPanel.getLayout();
+            @Override
+            public void menuSelected(MenuEvent e) {
+                cl.show(cardPanel, "Civilizations");
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+
+            }
+        };
+
+        ActionListener cardSwitchListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout) cardPanel.getLayout();
+                JMenuItem source = (JMenuItem) e.getSource();
+
+                if (source == scout) {
+                    cl.show(cardPanel, "Scouts");
+                } else if (source == castle) {
+                    cl.show(cardPanel, "Castle");
+                }
+            }
+        };
+
+        civ.addMenuListener(menuListener);
+        scout.addActionListener(cardSwitchListener);
+        castle.addActionListener(cardSwitchListener);
+
+        //add main panel at window panel
+        window.add(cardPanel);
+        //window.add(mainPanel);
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.setVisible(true);
     }
