@@ -1,13 +1,15 @@
-import interfaces.ICiv;
-import model.Francs;
-import model.Mongols;
+import controller.ActionListenerIcon;
+import controller.MenuListenerImpl;
+import controller.MouseListenerIcon;
+import interfaces.PanelCiv;
+import view.Francs;
+import view.Mongols;
 import service.ServiceColor;
 import service.ServiceFont;
 import service.ServiceIcon;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -118,14 +120,14 @@ public class Main {
         iconMongols.setBorder(raisedbevel);
         iconFrancs.setBorder(raisedbevel);
 
-        serviceIcon.mouse_over_icons_civ(iconMongols,colorTitle);
-        serviceIcon.mouse_over_icons_civ(iconFrancs,colorTitle);
+        iconMongols.addMouseListener(new MouseListenerIcon(iconMongols,colorTitle));
+        iconFrancs.addMouseListener(new MouseListenerIcon(iconFrancs, colorTitle));
 
         //PANELS CIVILIZATIONS
-        ICiv mongolPanel = new Mongols();
-        ICiv francPanel = new Francs();
-        serviceIcon.panel_icons_civ(iconMongols, mongolPanel);
-        serviceIcon.panel_icons_civ(iconFrancs,francPanel);
+        PanelCiv mongolPanel = new Mongols(new JFrame("Mongoles"));
+        PanelCiv francPanel = new Francs(new JFrame("Francos"));
+        iconMongols.addActionListener(new ActionListenerIcon(mongolPanel));
+        iconFrancs.addActionListener(new ActionListenerIcon(francPanel));
 
         panelCiv.add(iconMongols);
         panelCiv.add(iconFrancs);
@@ -146,23 +148,9 @@ public class Main {
 
         window.setJMenuBar(this.get_menu_bar());
 
-        MenuListener menuListener = new MenuListener() {
-            final CardLayout cl = (CardLayout) cardPanel.getLayout();
-            @Override
-            public void menuSelected(MenuEvent e) {
-                cl.show(cardPanel, "Civilizations");
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-
-            }
-        };
+        CardLayout managerPanels = (CardLayout) cardPanel.getLayout();
+        MenuListener getCivilizations = new MenuListenerImpl(managerPanels,
+                cardPanel, "Civilizations");
 
         ActionListener cardSwitchListener = new ActionListener() {
             @Override
@@ -178,7 +166,7 @@ public class Main {
             }
         };
 
-        civ.addMenuListener(menuListener);
+        civ.addMenuListener(getCivilizations);
         scout.addActionListener(cardSwitchListener);
         castle.addActionListener(cardSwitchListener);
 

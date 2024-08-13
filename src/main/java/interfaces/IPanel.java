@@ -1,5 +1,5 @@
 package interfaces;
 
-public interface ICiv {
+public interface IPanel {
     public void startGUI();
 }
