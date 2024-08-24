@@ -1,12 +1,17 @@
 import controller.ActionListenerIcon;
 import controller.MenuListenerImpl;
 import controller.MouseListenerIcon;
+import interfaces.IPanel;
 import interfaces.PanelCiv;
-import view.Francs;
-import view.Mongols;
+import view.civ.Francs;
+import view.MenuBar;
+import view.civ.Mongols;
 import service.ServiceColor;
 import service.ServiceFont;
 import service.ServiceIcon;
+import view.tactics.Castle;
+import view.tactics.Scout;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -17,11 +22,6 @@ import java.awt.event.ActionListener;
 
 public class Main {
 
-    private JMenuItem scout;
-    private JMenuItem castle;
-
-    private JMenu civ;
-
     public static void main(String[] args) {
         Main main = new Main();
     }
@@ -30,52 +30,16 @@ public class Main {
         startGUI();
     }
 
-    private JMenuBar get_menu_bar(){
-        JMenuBar menuBar;
-        JMenu tactics;
-        ServiceFont fonts;
-
-        //load colors
-        ServiceColor colorMenuBar = ServiceColor.MENUBAR;
-        ServiceColor colorTitle = ServiceColor.TITLE;
-        ServiceColor colorSubMenu = ServiceColor.SUBMENU;
-
-
-        menuBar = new JMenuBar();
-        civ = new JMenu("Civilizaciones");
-        tactics = new JMenu("Tácticas");
-        scout = new JMenuItem("rush scouts");
-        castle = new JMenuItem("fast castle boom");
-
-        menuBar.setBackground(colorMenuBar.getColor());
-        civ.setForeground(colorTitle.getColor());
-        tactics.setForeground(colorTitle.getColor());
-        scout.setBackground(colorSubMenu.getColor());
-        castle.setBackground(colorSubMenu.getColor());
-
-        //load fonts
-        String menuFont = "font/Centaur MT.ttf";
-        String subMenuFont = "font/papyrus.ttf";
-        fonts = new ServiceFont(menuFont, subMenuFont);
-
-        civ.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
-        tactics.setFont(fonts.getFontMenu().deriveFont(Font.BOLD,16));
-        scout.setFont(fonts.getFontSubMenu().deriveFont(Font.BOLD,12));
-        castle.setFont(fonts.getFontSubMenu().deriveFont(Font.BOLD,12));
-
-        tactics.add(scout);
-        tactics.add(castle);
-        menuBar.add(civ);
-        menuBar.add(tactics);
-
-        return menuBar;
-    }
-
     private void startGUI(){
         //load colors
         ServiceColor colorBackground = ServiceColor.BACKGROUND;
         ServiceColor colorMenuBar = ServiceColor.MENUBAR;
+        ServiceColor colorSubMenu = ServiceColor.SUBMENU;
         ServiceColor colorTitle = ServiceColor.TITLE;
+
+        //load menuBar
+        ServiceFont fonts = new ServiceFont("font/Centaur MT.ttf", "font/papyrus.ttf");
+        MenuBar menuBar = new MenuBar(colorMenuBar, colorTitle, colorSubMenu, fonts);
 
         //load image
         ServiceIcon serviceIcon = new ServiceIcon();
@@ -98,6 +62,8 @@ public class Main {
         JPanel cardPanel = new JPanel(new CardLayout());
 
         //MAIN PANEL
+        //IPanel home = new Home(colorBackground);
+        //home.startGUI();
         JPanel mainPanel = new JPanel();
         //organizo los contenedores en columnas
         mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
@@ -133,20 +99,18 @@ public class Main {
         panelCiv.add(iconFrancs);
 
         //PANELS TACTICS
-        JPanel scoutsPanel = new JPanel();
-        scoutsPanel.add(new JLabel("panel scouts!"));
-        JPanel castlePanel = new JPanel();
-        castlePanel.add(new JLabel("castle panel!"));
+        IPanel scoutPanel = new Scout();
+        IPanel castlePanel = new Castle();
 
         //add panels at main panel
         mainPanel.add(panelCiv);
 
         //add panels at card panel
-        cardPanel.add(scoutsPanel,"Scouts");
-        cardPanel.add(castlePanel,"Castle");
+        cardPanel.add(scoutPanel.startGUI(),"Scouts");
+        cardPanel.add(castlePanel.startGUI(),"Castle");
         cardPanel.add(mainPanel, "Civilizations");
 
-        window.setJMenuBar(this.get_menu_bar());
+        window.setJMenuBar(menuBar.get_menu_bar());
 
         CardLayout managerPanels = (CardLayout) cardPanel.getLayout();
         MenuListener getCivilizations = new MenuListenerImpl(managerPanels,
@@ -158,17 +122,17 @@ public class Main {
                 CardLayout cl = (CardLayout) cardPanel.getLayout();
                 JMenuItem source = (JMenuItem) e.getSource();
 
-                if (source == scout) {
+                if (source == menuBar.getScout()) {
                     cl.show(cardPanel, "Scouts");
-                } else if (source == castle) {
+                } else if (source == menuBar.getCastle()) {
                     cl.show(cardPanel, "Castle");
                 }
             }
         };
 
-        civ.addMenuListener(getCivilizations);
-        scout.addActionListener(cardSwitchListener);
-        castle.addActionListener(cardSwitchListener);
+        menuBar.getCiv().addMenuListener(getCivilizations);
+        menuBar.getScout().addActionListener(cardSwitchListener);
+        menuBar.getCastle().addActionListener(cardSwitchListener);
 
         //add main panel at window panel
         window.add(cardPanel);

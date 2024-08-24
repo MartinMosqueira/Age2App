@@ -1,6 +1,5 @@
 package controller;
 
-import interfaces.IPanel;
 import interfaces.PanelCiv;
 
 import java.awt.event.ActionEvent;

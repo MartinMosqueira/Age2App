@@ -1,5 +1,7 @@
 package interfaces;
 
+import javax.swing.*;
+
 public interface IPanel {
-    public void startGUI();
+    public JPanel startGUI();
 }
